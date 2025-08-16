@@ -1,0 +1,20 @@
+{
+  "name": "nextjs-wysiwyg",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@next/swc-win32-x64-msvc": "^13.4.7",
+    "docx": "^9.5.1",
+    "file-saver": "^2.0.5",
+    "html2pdf.js": "^0.10.3",
+    "next": "13.4.7",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-quill": "2.0.0"
+  }
+}
