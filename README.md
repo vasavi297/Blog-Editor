@@ -6,7 +6,7 @@
 ![License](https://img.shields.io/github/license/vasavi297/Blog-Editor)  
 [![Live Demo](https://img.shields.io/badge/Live-Demo-blue)](https://blog-editor-4vf8.vercel.app/)
 
-A **rich text blog editor** built with **Next.js** and **React Quill**. Users can create, edit, save, and publish blog posts. The editor supports saving posts locally or exporting them as **JSON, PDF, or DOCX**, giving users full control over their content.  
+A **rich text blog editor** built with **Next.js** and **React Quill**. Users can create, edit, save, and publish blog posts. The editor supports saving posts locally or exporting them as  **PDF** giving users full control over their content.  
 
 ---
 
