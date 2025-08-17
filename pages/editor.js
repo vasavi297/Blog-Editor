@@ -1,12 +1,12 @@
 import dynamic from 'next/dynamic';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import { useRouter } from 'next/router';
 
-// Dynamically import ReactQuill to avoid SSR errors
+// Dynamically import ReactQuill
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 import 'react-quill/dist/quill.snow.css';
 
-// Quill toolbar configuration
+// Toolbar configuration
 const toolbarModules = {
   toolbar: [
     [{ header: [1, 2, 3, false] }],
@@ -36,7 +36,7 @@ export default function Editor() {
   const [content, setContent] = useState('');
   const [preview, setPreview] = useState(false);
 
-  // Load post data if editing
+  // Load existing post if editing
   useEffect(() => {
     if (!id) return;
     const raw = localStorage.getItem('blog_posts');
@@ -50,7 +50,7 @@ export default function Editor() {
     }
   }, [id]);
 
-  // Image handler for ReactQuill
+  // Image handler
   const imageHandler = () => {
     if (typeof window === 'undefined') return;
     const input = document.createElement('input');
@@ -72,15 +72,15 @@ export default function Editor() {
     };
   };
 
-  // Quill modules with correct handlers
-  const modules = {
+  // Memoized modules to prevent editor reset
+  const modules = useMemo(() => ({
     toolbar: {
       container: toolbarModules.toolbar,
       handlers: { image: imageHandler }
     }
-  };
+  }), []);
 
-  // Save draft or publish post
+  // Save draft/publish
   const saveDraft = (published = false) => {
     const allRaw = localStorage.getItem('blog_posts');
     const list = allRaw ? JSON.parse(allRaw) : [];
@@ -99,7 +99,7 @@ export default function Editor() {
     router.push('/');
   };
 
-  // PDF export (browser only)
+  // PDF export
   const handleDownloadPDF = () => {
     if (typeof window === 'undefined') return;
     import('html2pdf.js').then((html2pdf) => {
@@ -131,7 +131,7 @@ export default function Editor() {
           <ReactQuill
             ref={quillRef}
             theme="snow"
-            value={content || ''}
+            value={content}
             onChange={setContent}
             modules={modules}
             formats={toolbarFormats}
