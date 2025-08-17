@@ -4,8 +4,9 @@ import { useRouter } from 'next/router';
 
 // Dynamically import ReactQuill to avoid SSR errors
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+import 'react-quill/dist/quill.snow.css';
 
-// Quill toolbar
+// Quill toolbar configuration
 const toolbarModules = {
   toolbar: [
     [{ header: [1, 2, 3, false] }],
@@ -51,7 +52,7 @@ export default function Editor() {
 
   // Image handler for ReactQuill
   const imageHandler = () => {
-    if (typeof window === 'undefined') return; // ensure browser
+    if (typeof window === 'undefined') return;
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/*';
@@ -61,7 +62,7 @@ export default function Editor() {
       if (!file) return;
       const reader = new FileReader();
       reader.onload = () => {
-        const editor = quillRef.current?.editor;
+        const editor = quillRef.current?.getEditor();
         if (!editor) return;
         const range = editor.getSelection(true);
         editor.insertEmbed(range.index, 'image', reader.result);
@@ -69,6 +70,14 @@ export default function Editor() {
       };
       reader.readAsDataURL(file);
     };
+  };
+
+  // Quill modules with correct handlers
+  const modules = {
+    toolbar: {
+      container: toolbarModules.toolbar,
+      handlers: { image: imageHandler }
+    }
   };
 
   // Save draft or publish post
@@ -124,7 +133,7 @@ export default function Editor() {
             theme="snow"
             value={content || ''}
             onChange={setContent}
-            modules={{ ...toolbarModules, handlers: { image: imageHandler } }}
+            modules={modules}
             formats={toolbarFormats}
             placeholder="Write your post here..."
             style={{ flex: 1, minHeight: 400, overflowY: 'auto', borderRadius: '8px 8px 0 0' }}
